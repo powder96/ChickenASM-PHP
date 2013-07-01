@@ -1,0 +1,129 @@
+# Prints "Hello, Reddit!"
+
+# H (72)
+push 8
+push 9
+multiply
+char
+
+# e (101)
+push 10
+push 10
+multiply
+push 1
+add
+char
+
+add
+
+# l (108)
+push 9
+push 12
+multiply
+char
+
+add
+
+# l (108)
+push 9
+push 12
+multiply
+char
+
+add
+
+# o (111)
+push 8
+push 14
+multiply
+push 1
+subtract
+char
+
+add
+
+# , (44)
+push 4
+push 11
+multiply
+char
+
+add
+
+# space (32)
+push 4
+push 8
+multiply
+char
+
+add
+
+# R (82)
+push 8
+push 10
+multiply
+push 2
+add
+char
+
+add
+
+# e (101)
+push 10
+push 10
+multiply
+push 1
+add
+char
+
+add
+
+# d (100)
+push 10
+push 10
+multiply
+char
+
+add
+
+# d (100)
+push 10
+push 10
+multiply
+char
+
+add
+
+# i (105)
+push 10
+push 10
+multiply
+push 5
+add
+char
+
+add
+
+# t (116)
+push 4
+push 7
+multiply
+push 1
+add
+push 4
+multiply
+char
+
+add
+
+# ! (33)
+push 4
+push 8
+multiply
+push 1
+add
+char
+ 
+add
+
+exit

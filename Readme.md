@@ -40,9 +40,8 @@ To build all example ChickenASM programs (*.cha), run the build.php script.
 ## Requirements
 * PHP 5.3
 
-```
-
 ## License
+
 Copyright (C) 2013 powder96 <https://github.com/powder96/>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

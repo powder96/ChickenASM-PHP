@@ -19,6 +19,8 @@ chicken chicken chicken chicken chicken chicken chicken chicken chicken chicken 
 chicken chicken chicken chicken
 chicken chicken chicken chicken chicken chicken chicken chicken chicken
 
+```
+
 ## ChickenASM Instructions
  * `exit` - Terminates the execution of the program.
  * `chicken` - Pushes string "chicken" onto the stack.

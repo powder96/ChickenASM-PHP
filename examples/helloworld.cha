@@ -1,0 +1,63 @@
+# Hello World by torbjrn <http://torso.me/>
+# input: "(unused)"
+
+push 10
+push 10
+multiply
+char
+push 1
+store
+push 0
+push 6
+push 6
+multiply
+subtract
+push 0
+push 7
+subtract
+push 0
+push 0
+push 3
+push 1
+push 2
+load
+exit
+subtract
+push 4
+multiply
+push 11
+push 3
+push 6
+push 0
+push 5
+push 3
+load
+exit
+multiply
+push 8
+add
+add
+char
+push 1
+load
+exit
+add
+push 1
+store
+push 2
+load
+exit
+push 2
+subtract
+push 2
+store
+push 2
+load
+exit
+push 0
+push 29
+subtract
+jump
+push 1
+load
+exit

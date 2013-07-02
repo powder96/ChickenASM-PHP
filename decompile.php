@@ -20,20 +20,29 @@
 	require_once('ChickenLanguage.php');
 	
 	define('EXAMPLES_DIR', __DIR__ . '/examples');	
+	
 	echo '<pre>';
-	$chickenASMFiles = glob(EXAMPLES_DIR . '/*.cha');
-	foreach($chickenASMFiles as $chickenASMFile) {
-		echo $chickenASMFile . "\n";
+	
+	$chickenCodeFiles = glob(EXAMPLES_DIR . '/*.chn');
+	foreach($chickenCodeFiles as $chickenCodeFile) {
+		echo $chickenCodeFile . "\n";
+		
 		try {
-			$chickenASMCode = file_get_contents($chickenASMFile);
-			if($chickenASMCode === false)
+			$chickenASMFile = EXAMPLES_DIR . '/' . pathinfo($chickenCodeFile, PATHINFO_FILENAME) . '.cha';
+			if(is_file($chickenASMFile))
+				throw new RuntimeException('Already decompiled');
+
+			$chickenCode = @file_get_contents($chickenCodeFile);
+			if($chickenCode === false)
 				throw new \RuntimeException('Cannot open the file');
-			$chickenCode = ChickenLanguage\convertChickenASMCodeToChickenCode($chickenASMCode);
-			$chickenCodeFile = EXAMPLES_DIR . '/' . pathinfo($chickenASMFile, PATHINFO_FILENAME) . '.chn';
-			file_put_contents($chickenCodeFile, $chickenCode);
+			
+			$chickenASMCode = ChickenLanguage\convertChickenCodeToChickenASMCode($chickenCode);
+			file_put_contents($chickenASMFile, $chickenASMCode);
 		}
+		
 		catch(\RuntimeException $e) {
 			echo ' * ' . $e->getMessage() . "\n";
 		}
 	}
+	
 	echo '</pre>';

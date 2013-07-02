@@ -1,0 +1,142 @@
+# Deadfish by torbjrn <http://torso.me/>
+# input: "iissiso"
+
+push 0
+load
+add
+push 0
+push 1
+compare
+chicken
+add
+add
+push 4
+store
+push 8
+push 4
+multiply
+char
+push 5
+store
+push 5
+load
+exit
+push 6
+store
+push 0
+push 1
+subtract
+push 3
+store
+push 0
+push 2
+store
+push 0
+push 1
+subtract
+push 2
+load
+exit
+compare
+push 0
+push 14
+subtract
+jump
+push 8
+push 8
+multiply
+push 4
+multiply
+push 2
+load
+exit
+compare
+push 0
+push 27
+subtract
+jump
+push 1
+push 3
+load
+exit
+add
+push 3
+store
+push 2
+load
+exit
+push 1
+subtract
+push 3
+load
+exit
+load
+chicken
+push 2
+load
+multiply
+compare
+push 0
+push 51
+subtract
+jump
+push 2
+add
+push 3
+load
+exit
+load
+chicken
+push 5
+load
+multiply
+compare
+push 0
+push 66
+subtract
+jump
+push 1
+subtract
+push 2
+load
+exit
+multiply
+push 12
+load
+multiply
+push 3
+load
+exit
+load
+chicken
+compare
+push 0
+push 85
+subtract
+jump
+push 5
+load
+exit
+push 3
+load
+exit
+load
+chicken
+push 1
+jump
+exit
+push 2
+load
+exit
+add
+push 6
+load
+exit
+add
+push 5
+store
+push 1
+push 0
+push 109
+subtract
+jump

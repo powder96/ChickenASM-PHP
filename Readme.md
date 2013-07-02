@@ -35,7 +35,7 @@ chicken chicken chicken chicken chicken chicken chicken chicken chicken
  * `push N` - Pushes (N - 10) onto the stack.
 
 ## Testing
-To build all example ChickenASM programs (*.cha), run the build.php script. To test the Chicken interpreter, run the index.php script.
+To build all example ChickenASM programs (*.cha), run the compile.php script. To decompile all example Chicken programs (*.chn), run the decompile.php script. To test the Chicken interpreter, run the index.php script.
 
 ## Requirements
 * PHP 5.3

@@ -102,7 +102,7 @@
 			++$currentLine;
 			$command = trim($line);
 			switch($command) {
-				case 'exit';
+				case 'exit':
 					$tokens[] = array(TOKEN_EXIT);
 					break;
 				case 'chicken':
@@ -161,7 +161,7 @@
 		$code = '';
 		foreach($tokens as $token) {
 			switch($token[0]) {
-				case TOKEN_EXIT;
+				case TOKEN_EXIT:
 					$command = 'exit';
 					break;
 				case TOKEN_CHICKEN:
@@ -231,9 +231,8 @@
 		$code = '';
 		foreach($tokens as $token) {
 			$instructions = getNumberOfChickenCodeInstructionsForToken($token);
-			if($instructions === false)
-				continue;
-			$code .= "\n" . substr(str_repeat(' chicken', $instructions), 1);
+			if($instructions !== false)
+				$code .= "\n" . substr(str_repeat(' chicken', $instructions), 1);
 		}
 		return substr($code, 1);
 	}
@@ -323,7 +322,7 @@
 					$condition = array_pop($stack);
 					if($condition)
 						$pToken += $offset;
-					$log .= "JUMP {$condition} TO {$offset}\n";
+					$log .= "JUMP IF {$condition} TO {$offset}\n";
 					break;
 				case TOKEN_CHAR:
 					$value = array_pop($stack);

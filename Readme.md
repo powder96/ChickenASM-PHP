@@ -1,6 +1,6 @@
 # ChickenASM
 
-This repository contains PHP code for translating programs between the [Chicken programming language](http://torso.me/chicken) and the ChickenASM programming language.
+This repository contains PHP code for working with programs written in [Chicken programming language](http://torso.me/chicken) and the ChickenASM programming language.
 
 ## Example
 ### ChickenASM code
@@ -35,7 +35,7 @@ chicken chicken chicken chicken chicken chicken chicken chicken chicken
  * `push N` - Pushes (N - 10) onto the stack.
 
 ## Testing
-To build all example ChickenASM programs (*.cha), run the build.php script.
+To build all example ChickenASM programs (*.cha), run the build.php script. To test the Chicken interpreter, run the index.php script.
 
 ## Requirements
 * PHP 5.3

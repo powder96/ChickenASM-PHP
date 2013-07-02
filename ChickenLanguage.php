@@ -259,7 +259,7 @@
 				throw new \RuntimeException('Maximum number of executed tokens is exceeded (token #' . $pToken . ')');
 			$token = getTokenForNumberOfChickenCodeInstructions($stack[$pToken]);
 			switch($token[0]) {
-				case TOKEN_EXIT;
+				case TOKEN_EXIT:
 					break 2;
 				case TOKEN_CHICKEN:
 					array_push($stack, 'chicken');

@@ -17,6 +17,8 @@
 	 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	 */
 
+	error_reporting(E_ALL);
+	
 	require_once('ChickenLanguage.php');
 	
 	define('EXAMPLES_DIR', __DIR__ . '/examples');
@@ -32,14 +34,25 @@
 		echo 'Input: <code>' . $input . '</code><br />';
 
 		try {
-			$output = ChickenLanguage\interpretChickenCode(file_get_contents($file), $input);
+			$log = '';
+			$output = ChickenLanguage\interpretChickenCode(file_get_contents($file), $input,
+					ChickenLanguage\DEFAULT_EXECUTED_TOKENS_LIMIT, $log);
 		}
 		catch(Exception $e) {
+			$log = '';
 			$output = $e->getMessage();
-		}		
+		}
+		
 		echo 'Output: <code>' . $output . ' <small><em>[' . htmlspecialchars($output) . ']</em></small></code><br />';
 		if($output !== $expectedOutput)
-			echo 'Expected output: <code>' . $expectedOutput . ' <small><em>[' . htmlspecialchars($expectedOutput) . ']</em></small></code>';
+			echo 'Expected output: <code>' . $expectedOutput . ' <small><em>[' . htmlspecialchars($expectedOutput) .
+					']</em></small></code>';
+		
+		if(!empty($log)) {
+			$htmlId = md5($file);
+			echo "<a href=\"#\" id=\"log-button-{$htmlId}\" onclick=\"document.getElementById('log-{$htmlId}').style.display = '';\">Log</a>";
+			echo "<pre id=\"log-{$htmlId}\" style=\"display: none;\">" . htmlspecialchars($log) . '</pre></span>';
+		}
 		
 		echo '<hr />';
 	}

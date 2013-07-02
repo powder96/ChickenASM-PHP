@@ -34,6 +34,8 @@
 	define('ChickenLanguage\\TOKEN_PUSH'     , 10);
 	define('ChickenLanguage\\TOKEN_COMMENT'  , 11);
 	
+	define('ChickenLanguage\\DEFAULT_EXECUTED_TOKENS_LIMIT', 30000);
+	
 	/**
 	 * Converts the ChickenASM code into the Chicken code.
 	 *
@@ -60,24 +62,30 @@
 	 * Interprets the ChickenASM code.
 	 *
 	 * @param string $code
-	 * @param string input
+	 * @param string $input
+	 * @param int $executedTokensLimit
+	 * @param string $log
 	 * @return string
 	 */
-	 function interpretChickenASMCode($code, $input = '') {
+	 function interpretChickenASMCode($code, $input = '', $executedTokensLimit = DEFAULT_EXECUTED_TOKENS_LIMIT,
+			&$log = null) {
 		$tokens = tokenizeChickenASMCode($code);
-		return interpretTokens($tokens, $input);
+		return interpretTokens($tokens, $input, $executedTokensLimit, $log);
 	 }
 	
 	/**
 	 * Interprets the Chicken code.
 	 *
 	 * @param string $code
-	 * @param string input
+	 * @param string $input
+	 * @param int $executedTokensLimit
+	 * @param string $log
 	 * @return string
 	 */
-	 function interpretChickenCode($code, $input = '') {
+	 function interpretChickenCode($code, $input = '', $executedTokensLimit = DEFAULT_EXECUTED_TOKENS_LIMIT,
+			&$log = null) {
 		$tokens = tokenizeChickenCode($code);
-		return interpretTokens($tokens, $input);
+		return interpretTokens($tokens, $input, $executedTokensLimit, $log);
 	 }
 	
 	/**
@@ -236,9 +244,10 @@
 	 * @param array $tokens
 	 * @param string $input
 	 * @param int $executedTokensLimit
+	 * @param string $log
 	 * @return string
 	 */
-	function interpretTokens($tokens, $input = '', $executedTokensLimit = 30000) {
+	function interpretTokens($tokens, $input = '', $executedTokensLimit = DEFAULT_EXECUTED_TOKENS_LIMIT, &$log = null) {
 		$stack = array();
 		
 		array_push($stack, &$stack);
@@ -263,6 +272,7 @@
 					break 2;
 				case TOKEN_CHICKEN:
 					array_push($stack, 'chicken');
+					$log .= "PUSH \"chicken\"\n";
 					break;
 				case TOKEN_ADD:
 					$a = array_pop($stack);
@@ -273,21 +283,25 @@
 						array_push($stack, $b + $a);
 					else
 						array_push($stack, toStringJavaScript($b) . toStringJavaScript($a));
+					$log .= 'ADD ' . toStringJavaScript($b) . ' + ' . toStringJavaScript($a) . "\n";
 					break;
 				case TOKEN_SUBTRACT:
 					$a = array_pop($stack);
 					$b = array_pop($stack);
 					array_push($stack, $b - $a);
+					$log .= "SUBTRACT {$b} - {$a}\n";
 					break;
 				case TOKEN_MULTIPLY:
 					$a = array_pop($stack);
 					$b = array_pop($stack);
 					array_push($stack, $a * $b);
+					$log .= "MULTIPLY {$a} * {$b}\n";
 					break;
 				case TOKEN_COMPARE:
 					$a = array_pop($stack);
 					$b = array_pop($stack);
 					array_push($stack, $a == $b);
+					$log .= "COMPARE {$a} ?= {$b}\n";
 					break;
 				case TOKEN_LOAD:
 					$address = array_pop($stack);
@@ -296,23 +310,29 @@
 						array_push($stack, null);
 					else
 						array_push($stack, $stack[$source][$address]);
+					$log .= "LOAD {$source}/{$address}\n";
 					break;
 				case TOKEN_STORE:
 					$address = array_pop($stack);
 					$value = array_pop($stack);
 					$stack[$address] = $value;
+					$log .= "STORE {$value} AT {$address}\n";
 					break;
 				case TOKEN_JUMP:
 					$offset = array_pop($stack);
 					$condition = array_pop($stack);
 					if($condition)
 						$pToken += $offset;
+					$log .= "JUMP {$condition} TO {$offset}\n";
 					break;
 				case TOKEN_CHAR:
-					array_push($stack, '&#' . (array_pop($stack)) . ';');
+					$value = array_pop($stack);
+					array_push($stack, '&#' . $value . ';');
+					$log .= "CHAR {$value}\n";
 					break;
 				case TOKEN_PUSH:
 					array_push($stack, $token[1]);
+					$log .= "PUSH {$token[1]}\n";
 					break;
 				default:
 					throw new \RuntimeException("Unsupported token \"{$token[0]}\"");

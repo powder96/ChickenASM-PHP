@@ -70,7 +70,7 @@
 						if(substr($instruction, 0, strlen('push')) === 'push')
 							$opcodes[] = (int)substr($instruction, strlen('push')) + 10;
 						else
-							throw new ParserException("Unknown instruction \"{$command}\" at line {$currentLine}");
+							throw new ParserException("Unknown instruction \"{$instruction}\" at line {$currentLine}");
 						break;
 				}
 			}

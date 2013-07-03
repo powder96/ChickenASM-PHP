@@ -88,11 +88,12 @@
 						$b = array_pop($this->stack);
 						if(is_int($a) && is_int($b))
 							array_push($this->stack, $b + $a);
-						else
-							array_push($this->stack,
-									self::valueToStringJavaScript($b) . self::valueToStringJavaScript($a));
-						$this->executionLog .= 'ADD ' .
-								self::valueToStringJavaScript($b) . ' + ' . self::valueToStringJavaScript($a) . "\n";
+						else {
+							$a = self::valueToStringJavaScript($a);
+							$b = self::valueToStringJavaScript($b);
+							array_push($this->stack, $b . $a);
+						}
+						$this->executionLog .= "ADD {$b} + {$a}\n";
 						break;
 					
 					case OPCODE_SUBTRACT:
@@ -175,13 +176,13 @@
 					return $value;
 				case 'array':
 					// TODO
-					throw new \VirtualMachineException('toStringJavaScript(array) is not implemented');
+					throw new VirtualMachineException('toStringJavaScript(array) is not implemented');
 				case 'object':
 					// TODO
-					throw new \VirtualMachineException('toStringJavaScript(object) is not implemented');
+					throw new VirtualMachineException('toStringJavaScript(object) is not implemented');
 				case 'resource':
 					// TODO
-					throw new \VirtualMachineException('toStringJavaScript(resource) is not implemented');
+					throw new VirtualMachineException('toStringJavaScript(resource) is not implemented');
 				case 'NULL':
 				case 'unknown type':
 					return 'undefined';

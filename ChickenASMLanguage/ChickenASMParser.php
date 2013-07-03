@@ -91,8 +91,8 @@
 				OPCODE_STORE    => 'store',
 				OPCODE_JUMP     => 'jump',
 				OPCODE_CHAR     => 'char',
-				'push'			=> 'push',
-				'comment'		=> '#',
+				'push'          => 'push',
+				'comment'       => '#',
 			);
 		}
 	}

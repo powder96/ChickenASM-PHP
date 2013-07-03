@@ -34,6 +34,29 @@ chicken chicken chicken chicken chicken chicken chicken chicken chicken
  * `char` - Converts the topmost value into a character.
  * `push N` - Pushes (N - 10) onto the stack.
 
+## Usage
+0. Include the library:
+```php
+	require_once('ChickenASMLanguage/ChickenASMLanguage.php');
+```
+1. Parse code into Chicken VM opcodes:
+```php
+	$parser = new ChickenASMLanguage\ChickenParser($code); // use for parsing Chicken code
+	$parser = new ChickenASMLanguage\ChickenASMParser($code); // use for parsing ChickenASM code
+	$opcodes = $parser->parse();
+```
+2. Feed opcodes into the VM:
+```php
+	$vm = new ChickenASMLanugage\VirtualMachine($opcodes, $input);
+	$output = $vm->execute();
+```
+3. Compile opcodes back into Chicken(ASM) code:
+```php
+	$compiler = new ChickenASMLanguage\ChickenCompiler($opcodes); // use for building Chicken code
+	$compiler = new ChickenASMLanguage\ChickenASMCompiler($opcodes); // use for building ChickenASM code
+	$code = $compiler->compile();
+```
+
 ## Testing
 To build all example ChickenASM programs (*.cha), run the compile.php script. To decompile all example Chicken programs (*.chn), run the decompile.php script. To test the Chicken interpreter, run the index.php script.
 

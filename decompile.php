@@ -17,27 +17,30 @@
 	 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	 */
 
-	require_once('ChickenLanguage.php');
+	require_once(__DIR__ . '/ChickenASMLanguage/ChickenASMLanguage.php');
 	
 	define('EXAMPLES_DIR', __DIR__ . '/examples');	
 	
 	echo '<pre>';
 	
-	$chickenCodeFiles = glob(EXAMPLES_DIR . '/*.chn');
-	foreach($chickenCodeFiles as $chickenCodeFile) {
-		echo $chickenCodeFile . "\n";
+	$chickenFiles = glob(EXAMPLES_DIR . '/*.chn');
+	foreach($chickenFiles as $chickenFile) {
+		echo $chickenFile . "\n";
 		
 		try {
-			$chickenASMFile = EXAMPLES_DIR . '/' . pathinfo($chickenCodeFile, PATHINFO_FILENAME) . '.cha';
+			$chickenASMFile = EXAMPLES_DIR . '/' . pathinfo($chickenFile, PATHINFO_FILENAME) . '.cha';
 			if(is_file($chickenASMFile))
 				throw new RuntimeException('Already decompiled');
 
-			$chickenCode = @file_get_contents($chickenCodeFile);
+			$chickenCode = @file_get_contents($chickenFile);
 			if($chickenCode === false)
-				throw new \RuntimeException('Cannot open the file');
+				throw new RuntimeException('Cannot open the file');
 			
-			$chickenASMCode = ChickenLanguage\convertChickenCodeToChickenASMCode($chickenCode);
-			file_put_contents($chickenASMFile, $chickenASMCode);
+			$parser = new ChickenASMLanguage\ChickenParser($chickenCode);
+			$opcodes = $parser->parse();
+			$compiler = new ChickenASMLanguage\ChickenASMCompiler($opcodes);
+			$code = $compiler->compile();
+			file_put_contents($chickenASMFile, $code);
 		}
 		
 		catch(\RuntimeException $e) {

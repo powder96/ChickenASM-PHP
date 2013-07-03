@@ -17,7 +17,7 @@
 	 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	 */
 	
-	require_once('ChickenLanguage.php');
+	require_once(__DIR__ . '/ChickenASMLanguage/ChickenASMLanguage.php');
 	
 	define('EXAMPLES_DIR', __DIR__ . '/examples');
 	
@@ -32,13 +32,15 @@
 		echo 'Input: <code>' . $input . '</code><br />';
 
 		try {
-			$log = '';
-			$output = ChickenLanguage\interpretChickenCode(file_get_contents($file), $input,
-					ChickenLanguage\DEFAULT_EXECUTED_TOKENS_LIMIT, $log);
+			$parser = new ChickenASMLanguage\ChickenParser(file_get_contents($file));
+			$opcodes = $parser->parse();
+			$vm = new ChickenASMLanguage\VirtualMachine($opcodes, $input);
+			$output = $vm->execute();
+			$log = $vm->getExecutionLog();
 		}
 		catch(Exception $e) {
-			$log = '';
 			$output = $e->getMessage();
+			$log = '';
 		}
 		
 		echo 'Output: <code>' . $output . ' <small><em>[' . htmlspecialchars($output) . ']</em></small></code><br />';

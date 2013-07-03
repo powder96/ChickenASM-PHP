@@ -17,7 +17,7 @@
 	 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	 */
 
-	require_once('ChickenLanguage.php');
+	require_once(__DIR__ . '/ChickenASMLanguage/ChickenASMLanguage.php');
 	
 	define('EXAMPLES_DIR', __DIR__ . '/examples');	
 	
@@ -28,17 +28,20 @@
 		echo $chickenASMFile . "\n";
 		
 		try {
-			$chickenCodeFile = EXAMPLES_DIR . '/' . pathinfo($chickenASMFile, PATHINFO_FILENAME) . '.chn';
+			$chickenFile = EXAMPLES_DIR . '/' . pathinfo($chickenASMFile, PATHINFO_FILENAME) . '.chn';
 		
 			$chickenASMCode = file_get_contents($chickenASMFile);
 			if($chickenASMCode === false)
 				throw new \RuntimeException('Cannot open the file');
 			
-			$chickenCode = ChickenLanguage\convertChickenASMCodeToChickenCode($chickenASMCode);
-			file_put_contents($chickenCodeFile, $chickenCode);
+			$parser = new ChickenASMLanguage\ChickenASMParser($chickenASMCode);
+			$opcodes = $parser->parse();
+			$compiler = new ChickenASMLanguage\ChickenCompiler($opcodes);
+			$code = $compiler->compile();
+			file_put_contents($chickenFile, $code);
 		}
 		
-		catch(\RuntimeException $e) {
+		catch(Exception $e) {
 			echo ' * ' . $e->getMessage() . "\n";
 		}
 	}

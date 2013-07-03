@@ -35,6 +35,7 @@
 				$instruction = trim($line);
 				switch($instruction) {
 					case 'exit':
+					case 'axe':
 						$opcodes[] = OPCODE_EXIT;
 						break;
 					case 'chicken':
@@ -44,24 +45,30 @@
 						$opcodes[] = OPCODE_ADD;
 						break;
 					case 'subtract':
+					case 'fox':
 						$opcodes[] = OPCODE_SUBTRACT;
 						break;
 					case 'multiply':
+					case 'rooster':
 						$opcodes[] = OPCODE_MULTIPLY;
 						break;
 					case 'compare':
 						$opcodes[] = OPCODE_COMPARE;
 						break;
 					case 'load':
+					case 'pick':
 						$opcodes[] = OPCODE_LOAD;
 						break;
 					case 'store':
+					case 'peck':
 						$opcodes[] = OPCODE_STORE;
 						break;
 					case 'jump':
+					case 'fr':
 						$opcodes[] = OPCODE_JUMP;
 						break;
 					case 'char':
+					case 'BBQ':
 						$opcodes[] = OPCODE_CHAR;
 						break;
 					default:

@@ -19,14 +19,21 @@
 	
 	namespace ChickenASMLanguage;
 	
-	require_once(__DIR__ . '/Parser.php');
-	require_once(__DIR__ . '/ChickenParser.php');
-	require_once(__DIR__ . '/ChickenASMParser.php');
-	require_once(__DIR__ . '/EggsemblyParser.php');
-	
-	require_once(__DIR__ . '/Compiler.php');
-	require_once(__DIR__ . '/ChickenCompiler.php');
-	require_once(__DIR__ . '/ChickenASMCompiler.php');
-	require_once(__DIR__ . '/EggsemblyCompiler.php');
-	
-	require_once(__DIR__ . '/VirtualMachine.php');
+	final class EggsemblyParser extends ChickenASMParser {
+		protected function defineInstructions() {
+			$this->instructions = array(
+				OPCODE_EXIT     => 'axe',
+				OPCODE_CHICKEN  => 'chicken',
+				OPCODE_ADD      => 'add',
+				OPCODE_SUBTRACT => 'fox',
+				OPCODE_MULTIPLY => 'rooster',
+				OPCODE_COMPARE  => 'compare',
+				OPCODE_LOAD     => 'pick',
+				OPCODE_STORE    => 'peck',
+				OPCODE_JUMP     => 'fr',
+				OPCODE_CHAR     => 'bbq',
+				'push'			=> 'push',
+				'comment'		=> '#'
+			);
+		}
+	}

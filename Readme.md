@@ -1,6 +1,6 @@
 # ChickenASM
 
-This repository contains PHP code for working with programs written in [Chicken programming language](http://torso.me/chicken) and the ChickenASM programming language.
+This repository contains PHP code for working with programs written in [Chicken programming language](http://torso.me/chicken), ChickenASM, and [Eggsembly](https://github.com/igorw/chicken-php).
 
 ## Example
 ### ChickenASM code
@@ -57,21 +57,23 @@ Pushes integer `(N - 10)` onto the stack.
 ```php
 	$parser = new ChickenASMLanguage\ChickenParser($code); // use for parsing Chicken code
 	$parser = new ChickenASMLanguage\ChickenASMParser($code); // use for parsing ChickenASM code
+	$parser = new ChickenASMLanguage\EggsemblyParser($code); // use for parsing Eggsembly code
 	$opcodes = $parser->parse();
 ```
 
 ### 2. Feed opcodes into the VM:
 
 ```php
-	$vm = new ChickenASMLanugage\VirtualMachine($opcodes, $input);
+	$vm = new ChickenASMLanguage\VirtualMachine($opcodes, $input);
 	$output = $vm->execute();
 ```
 
-### 3. Compile opcodes back into Chicken(ASM) code:
+### 3. Compile opcodes back into Chicken(ASM)/Eggsembly code:
 
 ```php
 	$compiler = new ChickenASMLanguage\ChickenCompiler($opcodes); // use for building Chicken code
 	$compiler = new ChickenASMLanguage\ChickenASMCompiler($opcodes); // use for building ChickenASM code
+	$compiler = new ChickenASMLanguage\EggsemblyCompiler($opcodes); // use for building Eggsembly code
 	$code = $compiler->compile();
 ```
 

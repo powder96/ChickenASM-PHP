@@ -22,17 +22,28 @@ chicken chicken chicken chicken chicken chicken chicken chicken chicken
 ```
 
 ## ChickenASM Instructions
- * `exit` - Terminates the execution of the program.
- * `chicken` - Pushes string "chicken" onto the stack.
- * `add` - Removes the two topmost values from the stack and replaces them with their sum (can be used to add numbers or concatenate strings).
- * `subtract` - Removes the two topmost values from the stack and replaces them with their difference.
- * `multiply` - Removes the two topmost values from the stack and replaces them with their product.
- * `compare` - Removes the two topmost values from the stack, checks if they are equal, and pushes either true or false instead.
- * `load` - The topmost value is interpreted as an address. This is a double wide instruction that uses the next value to determine what to load from: 0 for loading from the stack, 1 for loading from input.
- * `store` - The topmost values are interpreted as an address. The second topmost value get stored at that address on the stack.
- * `jump` - Jumps to a different instruction if the condition is truthy. The topmost value is interpreted as a relative offset. The second topmost value is the condition.
- * `char` - Converts the topmost value into a character.
- * `push N` - Pushes (N - 10) onto the stack.
+### exit (axe)
+Terminates the execution of the program.
+### chicken
+Pushes string `"chicken"` onto the stack.
+### add
+Removes the two topmost values from the stack and replaces them with their sum (can be used to add numbers or concatenate strings).
+### subtract (fox)
+Removes the two topmost values from the stack and replaces them with their difference.
+### multiply (rooster)
+Removes the two topmost values from the stack and replaces them with their product.
+### compare
+Removes the two topmost values from the stack, checks if they are equal, and pushes either `true` or `false` instead.
+### load (pick)
+The topmost value is interpreted as an address. This is a double wide instruction that uses the opcode of the next instruction to determine what to load from: 0 (`exit`) for loading from the stack, 1 (`chicken`) for loading from input.
+### store (peck)
+The topmost values are interpreted as an address. The second topmost value get stored at that address on the stack.
+### jump (fr)
+Jumps to a different instruction if the condition is truthy. The topmost value is interpreted as a relative offset. The second topmost value is the condition.
+### char (BBQ)
+Converts the topmost value into a HTML entity.
+### push N
+Pushes integer `(N - 10)` onto the stack.
 
 ## Usage
 ### 0. Include the library:

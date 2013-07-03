@@ -73,6 +73,8 @@
 				
 				$opcode = $this->stack[$this->programCounter];
 				
+				$this->executionLog .= str_pad($this->programCounter, 5, ' ', STR_PAD_LEFT) . ': ';
+				
 				switch($opcode) {
 					case OPCODE_EXIT:
 						$this->executionLog .= "EXIT\n";
@@ -80,80 +82,82 @@
 					
 					case OPCODE_CHICKEN:
 						array_push($this->stack, 'chicken');
-						$this->executionLog .= "PUSH \"chicken\"\n";
+						$this->executionLog .= 'PUSH "chicken"';
 						break;
 					
 					case OPCODE_ADD:
 						$a = array_pop($this->stack);
 						$b = array_pop($this->stack);
-						if(is_int($a) && is_int($b))
-							array_push($this->stack, $b + $a);
-						else {
-							$a = self::valueToStringJavaScript($a);
-							$b = self::valueToStringJavaScript($b);
-							array_push($this->stack, $b . $a);
-						}
-						$this->executionLog .= "ADD {$b} + {$a}\n";
+						$result = self::addJS($b, $a);
+						array_push($this->stack, $result);
+						$this->executionLog .= 'ADD ' . self::toStringJS($b) . ' + ' . self::toStringJS($a) . ' = ' .
+								self::toStringJS($result);
 						break;
 					
 					case OPCODE_SUBTRACT:
 						$a = array_pop($this->stack);
 						$b = array_pop($this->stack);
-						array_push($this->stack, $b - $a);
-						$this->executionLog .= "SUBTRACT {$b} - {$a}\n";
+						$result = self::subtractJS($b, $a);
+						array_push($this->stack, $result);
+						$this->executionLog .= 'SUBTRACT ' .
+								self::toStringJS($b) . ' - ' . self::toStringJS($a) . ' = ' .
+								self::toStringJS($result);
 						break;
 					
 					case OPCODE_MULTIPLY:
 						$a = array_pop($this->stack);
 						$b = array_pop($this->stack);
 						array_push($this->stack, $a * $b);
-						$this->executionLog .= "MULTIPLY {$a} * {$b}\n";
+						$this->executionLog .= 'MULTIPLY ' . $a . ' * ' . $b;
 						break;
 					
 					case OPCODE_COMPARE:
 						$a = array_pop($this->stack);
 						$b = array_pop($this->stack);
-						array_push($this->stack, $a == $b);
-						$this->executionLog .= "COMPARE {$a} ?= {$b}\n";
+						array_push($this->stack, self::isEqualJS($a, $b));
+						$this->executionLog .= 'COMPARE ' . self::toStringJS($a) . ' ?= ' . self::toStringJS($b);
 						break;
 					
 					case OPCODE_LOAD:
 						$address = array_pop($this->stack);
 						$source = $this->stack[++$this->programCounter];
 						if(!isset($this->stack[$source][$address]))
-							array_push($this->stack, null);
+							$result = null;
 						else
-							array_push($this->stack, $this->stack[$source][$address]);
-						$this->executionLog .= "LOAD {$source}/{$address}\n";
+							$result = $this->stack[$source][$address];
+						array_push($this->stack, $result);
+						$this->executionLog .= "LOAD {$source}/{$address} = " . self::toStringJS($result);
 						break;
 					
 					case OPCODE_STORE:
 						$address = array_pop($this->stack);
 						$value = array_pop($this->stack);
 						$this->stack[$address] = $value;
-						$this->executionLog .= "STORE {$value} AT {$address}\n";
+						$this->executionLog .= 'STORE ' . self::toStringJS($value) . ' AT ' . $address;
 						break;
 					
 					case OPCODE_JUMP:
 						$offset = array_pop($this->stack);
 						$condition = array_pop($this->stack);
-						if($condition)
+						if(self::toBooleanJS($condition))
 							$this->programCounter += $offset;
-						$this->executionLog .= "JUMP IF {$condition} TO {$offset}\n";
+						$this->executionLog .= 'JUMP IF ' . self::toStringJS($condition) . ' TO ' . $offset;
 						break;
 					
 					case OPCODE_CHAR:
 						$value = array_pop($this->stack);
 						array_push($this->stack, '&#' . $value . ';');
-						$this->executionLog .= "CHAR {$value}\n";
+						$this->executionLog .= 'CHAR ' . $value;
 						break;
 					
 					default: // push n
 						$value = $opcode - 10;
 						array_push($this->stack, $value);
-						$this->executionLog .= "PUSH {$value}\n";
+						$this->executionLog .= 'PUSH ' . $value;
 						break;
 				}
+				
+				$this->executionLog .= "\n";
 				
 				++$this->programCounter;
 			}
@@ -165,12 +169,28 @@
 			return $output;
 		}
 		
-		private static function valueToStringJavaScript($value) {
+		// ECMAScript Language Specification 9.2
+		private static function toBooleanJS($value) {
+			if(is_null($value)) // or undefined
+				return false;
+			if(is_bool($value))
+				return $value;
+			if(self::isNumberJS($value))
+				return !is_nan($value) && (float)$value !== (float)0;
+			if(is_string($value))
+				return !empty($value);
+			if(is_object($value))
+				return true;
+		}
+		
+		private static function toStringJS($value) {
 			switch(gettype($value)) {
 				case 'boolean':
 					return $value ? 'true' : 'false';
 				case 'integer':
 				case 'double':
+					if(is_nan($value))
+						return 'NaN';
 					return (string)$value;
 				case 'string':
 					return $value;
@@ -187,5 +207,33 @@
 				case 'unknown type':
 					return 'undefined';
 			}
+		}
+		
+		private static function addJS($a, $b) {
+			if(self::isNumberJS($a) && self::isNumberJS($b))
+				return $a + $b;
+			else
+				return self::toStringJS($a) . self::toStringJS($b);
+		}
+		
+		private static function subtractJS($a, $b) {
+			if(self::isNumberJS($a) && self::isNumberJS($b))
+				return $a - $b;
+			elseif(is_numeric($a) && is_numeric($b))
+				return (float)$a - (float)$b;
+			else
+				return NAN;
+		}
+		
+		private static function isEqualJS($a, $b) {
+			if((is_float($a) && is_nan($a)) || (is_float($b) && is_nan($b)))
+				return false;
+			if(is_string($a) || is_string($b))
+				return self::toStringJS($a) === self::toStringJS($b);
+			return $a == $b;
+		}
+		
+		private static function isNumberJS($value) {
+			return is_int($value) || is_float($value);
 		}
 	}

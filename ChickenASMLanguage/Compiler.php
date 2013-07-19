@@ -19,7 +19,9 @@
 	
 	namespace ChickenASMLanguage;
 	
+	final class CompilerException extends \RuntimeException {}
+	
 	interface Compiler {
-		public function __construct($opcodes);
+		public function __construct($code);
 		public function compile();
 	}

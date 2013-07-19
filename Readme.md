@@ -52,13 +52,13 @@ Pushes integer `N` onto the stack.
 	require_once('ChickenASMLanguage/ChickenASMLanguage.php');
 ```
 
-### 1. Parse code into Chicken VM opcodes:
+### 1. Compile code into Chicken VM opcodes:
 
 ```php
-	$parser = new ChickenASMLanguage\ChickenParser($code); // use for parsing Chicken code
-	$parser = new ChickenASMLanguage\ChickenASMParser($code); // use for parsing ChickenASM code
-	$parser = new ChickenASMLanguage\EggsemblyParser($code); // use for parsing Eggsembly code
-	$opcodes = $parser->parse();
+	$compiler = new ChickenASMLanguage\ChickenCompiler($code); // use this to compile Chicken code
+	$compiler = new ChickenASMLanguage\ChickenASMCompiler($code); // use this to compile ChickenASM code
+	$compiler = new ChickenASMLanguage\EggsemblyCompiler$code); // use this to compile Eggsembly code
+	$opcodes = $compiler->parse();
 ```
 
 ### 2. Feed opcodes into the VM:
@@ -68,17 +68,17 @@ Pushes integer `N` onto the stack.
 	$output = $vm->execute();
 ```
 
-### 3. Compile opcodes back into Chicken(ASM)/Eggsembly code:
+### 3. Decompile opcodes into Chicken(ASM)/Eggsembly code:
 
 ```php
-	$compiler = new ChickenASMLanguage\ChickenCompiler($opcodes); // use for building Chicken code
-	$compiler = new ChickenASMLanguage\ChickenASMCompiler($opcodes); // use for building ChickenASM code
-	$compiler = new ChickenASMLanguage\EggsemblyCompiler($opcodes); // use for building Eggsembly code
-	$code = $compiler->compile();
+	$decompiler = new ChickenASMLanguage\ChickenDecompiler($opcodes); // use this to get Chicken code
+	$decompiler = new ChickenASMLanguage\ChickenASMDecompiler($opcodes); // use this to get ChickenASM code
+	$decompiler = new ChickenASMLanguage\EggsemblyDecompiler($opcodes); // use this to get Eggsembly code
+	$code = $decompiler->decompile();
 ```
 
 ## Testing
-To build all example ChickenASM programs (*.cha), run the compile.php script. To decompile all example Chicken programs (*.chn), run the decompile.php script. To test the Chicken interpreter, run the index.php script.
+To convert example ChickenASM programs (*.cha), run the cha-to-chn.php script. To convert all example Chicken programs (*.chn), run the chn-to-cha.php script. To test the Chicken interpreter, run the index.php script.
 
 ## Requirements
 * PHP 5.3

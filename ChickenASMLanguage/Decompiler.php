@@ -19,9 +19,7 @@
 	
 	namespace ChickenASMLanguage;
 	
-	final class ParserException extends \RuntimeException {}
-	
-	interface Parser {
-		public function __construct($code);
-		public function parse();
+	interface Decompiler {
+		public function __construct($opcodes);
+		public function decompile();
 	}

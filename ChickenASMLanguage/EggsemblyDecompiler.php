@@ -19,7 +19,7 @@
 	
 	namespace ChickenASMLanguage;
 	
-	final class EggsemblyParser extends ChickenASMParser {
+	final class EggsemblyDecompiler extends ChickenASMDecompiler {
 		protected function defineInstructions() {
 			$this->instructions = array(
 				OPCODE_EXIT     => 'axe',
@@ -32,8 +32,7 @@
 				OPCODE_STORE    => 'peck',
 				OPCODE_JUMP     => 'fr',
 				OPCODE_CHAR     => 'bbq',
-				'push'          => 'push',
-				'comment'       => '#'
+				'push'          => 'push'
 			);
 		}
 	}

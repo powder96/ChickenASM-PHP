@@ -23,25 +23,27 @@
 	
 	echo '<pre>';
 	
-	$chickenASMFiles = glob(EXAMPLES_DIR . '/*.cha');
-	foreach($chickenASMFiles as $chickenASMFile) {
-		echo $chickenASMFile . "\n";
+	$chickenFiles = glob(EXAMPLES_DIR . '/*.chn');
+	foreach($chickenFiles as $chickenFile) {
+		echo $chickenFile . "\n";
 		
 		try {
-			$chickenFile = EXAMPLES_DIR . '/' . pathinfo($chickenASMFile, PATHINFO_FILENAME) . '.chn';
-		
-			$chickenASMCode = file_get_contents($chickenASMFile);
-			if($chickenASMCode === false)
-				throw new \RuntimeException('Cannot open the file');
+			$chickenASMFile = EXAMPLES_DIR . '/' . pathinfo($chickenFile, PATHINFO_FILENAME) . '.cha';
+			if(is_file($chickenASMFile))
+				throw new RuntimeException('Already decompiled');
+
+			$chickenCode = @file_get_contents($chickenFile);
+			if($chickenCode === false)
+				throw new RuntimeException('Cannot open the file');
 			
-			$parser = new ChickenASMLanguage\ChickenASMParser($chickenASMCode);
-			$opcodes = $parser->parse();
-			$compiler = new ChickenASMLanguage\ChickenCompiler($opcodes);
-			$code = $compiler->compile();
-			file_put_contents($chickenFile, $code);
+			$compiler = new ChickenASMLanguage\ChickenCompiler($chickenCode);
+			$opcodes = $compiler->compile();
+			$decompiler = new ChickenASMLanguage\ChickenASMDecompiler($opcodes);
+			$code = $decompiler->decompile();
+			file_put_contents($chickenASMFile, $code);
 		}
 		
-		catch(Exception $e) {
+		catch(\RuntimeException $e) {
 			echo ' * ' . $e->getMessage() . "\n";
 		}
 	}

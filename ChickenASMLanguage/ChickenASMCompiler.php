@@ -20,36 +20,63 @@
 	namespace ChickenASMLanguage;
 	
 	class ChickenASMCompiler implements Compiler {
-		private $opcodes;
+		private $code;
 		protected $instructions;
 		
-		public function __construct($opcodes) {
+		public function __construct($code) {
 			$this->defineInstructions();
-			$this->opcodes = $opcodes;
+			$this->code = $code;
 		}
 		
 		public function compile() {
-			$code = '';
-			foreach($this->opcodes as $opcode) {
-				switch($opcode) {
-					case OPCODE_EXIT:
-					case OPCODE_CHICKEN:
-					case OPCODE_ADD:
-					case OPCODE_SUBTRACT:
-					case OPCODE_MULTIPLY:
-					case OPCODE_COMPARE:
-					case OPCODE_LOAD:
-					case OPCODE_STORE:
-					case OPCODE_JUMP:
-					case OPCODE_CHAR:
-						$code .= $this->instructions[$opcode] . "\n";
+			$opcodes = array();
+			$lines = explode("\n", $this->code);
+			$currentLine = 0;
+			foreach($lines as $line) {
+				++$currentLine;
+				$instruction = trim($line);
+				switch($instruction) {
+					case $this->instructions[OPCODE_EXIT]:
+						$opcodes[] = OPCODE_EXIT;
+						break;
+					case $this->instructions[OPCODE_CHICKEN]:
+						$opcodes[] = OPCODE_CHICKEN;
+						break;
+					case $this->instructions[OPCODE_ADD]:
+						$opcodes[] = OPCODE_ADD;
+						break;
+					case $this->instructions[OPCODE_SUBTRACT]:
+						$opcodes[] = OPCODE_SUBTRACT;
+						break;
+					case $this->instructions[OPCODE_MULTIPLY]:
+						$opcodes[] = OPCODE_MULTIPLY;
+						break;
+					case $this->instructions[OPCODE_COMPARE]:
+						$opcodes[] = OPCODE_COMPARE;
+						break;
+					case $this->instructions[OPCODE_LOAD]:
+						$opcodes[] = OPCODE_LOAD;
+						break;
+					case $this->instructions[OPCODE_STORE]:
+						$opcodes[] = OPCODE_STORE;
+						break;
+					case$this->instructions[OPCODE_JUMP]:
+						$opcodes[] = OPCODE_JUMP;
+						break;
+					case $this->instructions[OPCODE_CHAR]:
+						$opcodes[] = OPCODE_CHAR;
 						break;
 					default:
-						$code .= $this->instructions['push'] . ' ' . ($opcode - 10) . "\n";
+						if(empty($instruction) || strpos($instruction, $this->instructions['comment']) === 0)
+							break; // ignore empty lines and comments
+						if(strpos($instruction, $this->instructions['push']) === 0)
+							$opcodes[] = (int)substr($instruction, strlen($this->instructions['push'])) + 10;
+						else
+							throw new CompilerException("Unknown instruction \"{$instruction}\" at line {$currentLine}");
 						break;
 				}
 			}
-			return $code;
+			return $opcodes;
 		}
 		
 		protected function defineInstructions() {
@@ -64,7 +91,8 @@
 				OPCODE_STORE    => 'store',
 				OPCODE_JUMP     => 'jump',
 				OPCODE_CHAR     => 'char',
-				'push'          => 'push'
+				'push'          => 'push',
+				'comment'       => '#',
 			);
 		}
 	}

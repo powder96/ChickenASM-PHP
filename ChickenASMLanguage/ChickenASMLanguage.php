@@ -19,14 +19,14 @@
 	
 	namespace ChickenASMLanguage;
 	
-	require_once(__DIR__ . '/Parser.php');
-	require_once(__DIR__ . '/ChickenParser.php');
-	require_once(__DIR__ . '/ChickenASMParser.php');
-	require_once(__DIR__ . '/EggsemblyParser.php');
-	
 	require_once(__DIR__ . '/Compiler.php');
 	require_once(__DIR__ . '/ChickenCompiler.php');
 	require_once(__DIR__ . '/ChickenASMCompiler.php');
 	require_once(__DIR__ . '/EggsemblyCompiler.php');
+	
+	require_once(__DIR__ . '/Decompiler.php');
+	require_once(__DIR__ . '/ChickenDecompiler.php');
+	require_once(__DIR__ . '/ChickenASMDecompiler.php');
+	require_once(__DIR__ . '/EggsemblyDecompiler.php');
 	
 	require_once(__DIR__ . '/VirtualMachine.php');

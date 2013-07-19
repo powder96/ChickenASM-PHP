@@ -32,8 +32,8 @@
 		echo 'Input: <code>' . $input . '</code><br />';
 
 		try {
-			$parser = new ChickenASMLanguage\ChickenParser(file_get_contents($file));
-			$opcodes = $parser->parse();
+			$compiler = new ChickenASMLanguage\ChickenCompiler(file_get_contents($file));
+			$opcodes = $compiler->compile();
 			$vm = new ChickenASMLanguage\VirtualMachine($opcodes, $input);
 			$output = $vm->execute();
 			$log = $vm->getExecutionLog();

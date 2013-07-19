@@ -19,18 +19,17 @@
 	
 	namespace ChickenASMLanguage;
 	
-	final class ChickenParser implements Parser {
-		private $code;
+	final class ChickenDecompiler implements Decompiler {
+		private $opcodes;
 		
-		public function __construct($code) {
-			$this->code = $code;
+		public function __construct($opcodes) {
+			$this->opcodes = $opcodes;
 		}
 		
-		public function parse() {
-			$opcodes = array();
-			$lines = explode("\n", $this->code);
-			foreach($lines as $line)
-				$opcodes[] = substr_count($line, 'chicken');
-			return $opcodes;
+		public function decompile() {
+			$code = '';
+			foreach($this->opcodes as $opcode)
+				$code .= "\n" . substr(str_repeat(' chicken', $opcode), 1);
+			return substr($code, 1);
 		}
 	}

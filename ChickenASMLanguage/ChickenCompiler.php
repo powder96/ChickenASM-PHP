@@ -20,16 +20,17 @@
 	namespace ChickenASMLanguage;
 	
 	final class ChickenCompiler implements Compiler {
-		private $opcodes;
+		private $code;
 		
-		public function __construct($opcodes) {
-			$this->opcodes = $opcodes;
+		public function __construct($code) {
+			$this->code = $code;
 		}
 		
 		public function compile() {
-			$code = '';
-			foreach($this->opcodes as $opcode)
-				$code .= "\n" . substr(str_repeat(' chicken', $opcode), 1);
-			return substr($code, 1);
+			$opcodes = array();
+			$lines = explode("\n", $this->code);
+			foreach($lines as $line)
+				$opcodes[] = substr_count($line, 'chicken');
+			return $opcodes;
 		}
 	}

@@ -1,4 +1,4 @@
-# ChickenASM
+# ChickenASM-PHP
 
 This repository contains PHP code for working with programs written in [Chicken programming language](http://torso.me/chicken), ChickenASM, and [Eggsembly](https://github.com/igorw/chicken-php).
 

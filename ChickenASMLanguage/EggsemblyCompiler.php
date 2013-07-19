@@ -32,8 +32,7 @@
 				OPCODE_STORE    => 'peck',
 				OPCODE_JUMP     => 'fr',
 				OPCODE_CHAR     => 'bbq',
-				'push'          => 'push',
-				'comment'       => '#'
+				'push'          => 'push'
 			);
 		}
 	}

@@ -67,12 +67,8 @@
 						$opcodes[] = OPCODE_CHAR;
 						break;
 					default:
-						if(empty($instruction) || strpos($instruction, $this->instructions['comment']) === 0)
-							break; // ignore empty lines and comments
 						if(strpos($instruction, $this->instructions['push']) === 0)
 							$opcodes[] = (int)substr($instruction, strlen($this->instructions['push'])) + 10;
-						else
-							throw new CompilerException("Unknown instruction \"{$instruction}\" at line {$currentLine}");
 						break;
 				}
 			}
@@ -91,8 +87,7 @@
 				OPCODE_STORE    => 'store',
 				OPCODE_JUMP     => 'jump',
 				OPCODE_CHAR     => 'char',
-				'push'          => 'push',
-				'comment'       => '#',
+				'push'          => 'push'
 			);
 		}
 	}

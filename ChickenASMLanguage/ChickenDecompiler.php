@@ -29,7 +29,7 @@
 		public function decompile() {
 			$code = '';
 			foreach($this->opcodes as $opcode)
-				$code .= "\n" . substr(str_repeat(' chicken', $opcode), 1);
-			return substr($code, 1);
+				$code .= substr(str_repeat(' chicken', $opcode), 1) . "\n";
+			return $code;
 		}
 	}

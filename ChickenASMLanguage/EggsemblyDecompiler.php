@@ -19,9 +19,15 @@
 	
 	namespace ChickenASMLanguage;
 	
-	final class EggsemblyDecompiler extends ChickenASMDecompiler {
-		protected function defineInstructions() {
-			$this->instructions = array(
+	final class EggsemblyDecompiler implements Decompiler {
+		private $opcodes;
+		
+		public function __construct($opcodes) {
+			$this->opcodes = $opcodes;
+		}
+		
+		public function decompile() {
+			$instructions = array(
 				OPCODE_EXIT     => 'axe',
 				OPCODE_CHICKEN  => 'chicken',
 				OPCODE_ADD      => 'add',
@@ -31,8 +37,28 @@
 				OPCODE_LOAD     => 'pick',
 				OPCODE_STORE    => 'peck',
 				OPCODE_JUMP     => 'fr',
-				OPCODE_CHAR     => 'bbq',
-				'push'          => 'push'
+				OPCODE_CHAR     => 'bbq'
 			);
+			$code = '';
+			foreach($this->opcodes as $opcode) {
+				switch($opcode) {
+					case OPCODE_EXIT:
+					case OPCODE_CHICKEN:
+					case OPCODE_ADD:
+					case OPCODE_SUBTRACT:
+					case OPCODE_MULTIPLY:
+					case OPCODE_COMPARE:
+					case OPCODE_LOAD:
+					case OPCODE_STORE:
+					case OPCODE_JUMP:
+					case OPCODE_CHAR:
+						$code .= $instructions[$opcode] . "\n";
+						break;
+					default:
+						$code .= 'push ' . ($opcode - 10) . "\n";
+						break;
+				}
+			}
+			return $code;
 		}
 	}

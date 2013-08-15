@@ -21,10 +21,8 @@
 	
 	class ChickenASMCompiler implements Compiler {
 		private $code;
-		protected $instructions;
 		
 		public function __construct($code) {
-			$this->defineInstructions();
 			$this->code = $code;
 		}
 		
@@ -36,58 +34,43 @@
 				++$currentLine;
 				$instruction = trim($line);
 				switch($instruction) {
-					case $this->instructions[OPCODE_EXIT]:
+					case 'exit':
 						$opcodes[] = OPCODE_EXIT;
 						break;
-					case $this->instructions[OPCODE_CHICKEN]:
+					case 'chicken':
 						$opcodes[] = OPCODE_CHICKEN;
 						break;
-					case $this->instructions[OPCODE_ADD]:
+					case 'add':
 						$opcodes[] = OPCODE_ADD;
 						break;
-					case $this->instructions[OPCODE_SUBTRACT]:
+					case 'subtract':
 						$opcodes[] = OPCODE_SUBTRACT;
 						break;
-					case $this->instructions[OPCODE_MULTIPLY]:
+					case 'multiply':
 						$opcodes[] = OPCODE_MULTIPLY;
 						break;
-					case $this->instructions[OPCODE_COMPARE]:
+					case 'compare':
 						$opcodes[] = OPCODE_COMPARE;
 						break;
-					case $this->instructions[OPCODE_LOAD]:
-						$opcodes[] = OPCODE_LOAD;
-						break;
-					case $this->instructions[OPCODE_STORE]:
+					case 'store':
 						$opcodes[] = OPCODE_STORE;
 						break;
-					case$this->instructions[OPCODE_JUMP]:
+					case 'jump':
 						$opcodes[] = OPCODE_JUMP;
 						break;
-					case $this->instructions[OPCODE_CHAR]:
+					case 'char':
 						$opcodes[] = OPCODE_CHAR;
 						break;
 					default:
-						if(strpos($instruction, $this->instructions['push']) === 0)
-							$opcodes[] = (int)substr($instruction, strlen($this->instructions['push'])) + 10;
+						if(strpos($instruction, 'load') === 0) {
+							$opcodes[] = OPCODE_LOAD;
+							$opcodes[] = (int)substr($instruction, strlen('load'));
+						}
+						if(strpos($instruction, 'push') === 0)
+							$opcodes[] = (int)substr($instruction, strlen('push')) + 10;
 						break;
 				}
 			}
 			return $opcodes;
-		}
-		
-		protected function defineInstructions() {
-			$this->instructions = array(
-				OPCODE_EXIT     => 'exit',
-				OPCODE_CHICKEN  => 'chicken',
-				OPCODE_ADD      => 'add',
-				OPCODE_SUBTRACT => 'subtract',
-				OPCODE_MULTIPLY => 'multiply',
-				OPCODE_COMPARE  => 'compare',
-				OPCODE_LOAD     => 'load',
-				OPCODE_STORE    => 'store',
-				OPCODE_JUMP     => 'jump',
-				OPCODE_CHAR     => 'char',
-				'push'          => 'push'
-			);
 		}
 	}

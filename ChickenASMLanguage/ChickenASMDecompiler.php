@@ -21,50 +21,51 @@
 	
 	class ChickenASMDecompiler implements Decompiler {
 		private $opcodes;
-		protected $instructions;
 		
 		public function __construct($opcodes) {
-			$this->defineInstructions();
 			$this->opcodes = $opcodes;
 		}
 		
 		public function decompile() {
-			$code = '';
-			foreach($this->opcodes as $opcode) {
-				switch($opcode) {
-					case OPCODE_EXIT:
-					case OPCODE_CHICKEN:
-					case OPCODE_ADD:
-					case OPCODE_SUBTRACT:
-					case OPCODE_MULTIPLY:
-					case OPCODE_COMPARE:
-					case OPCODE_LOAD:
-					case OPCODE_STORE:
-					case OPCODE_JUMP:
-					case OPCODE_CHAR:
-						$code .= $this->instructions[$opcode] . "\n";
-						break;
-					default:
-						$code .= $this->instructions['push'] . ' ' . ($opcode - 10) . "\n";
-						break;
-				}
-			}
-			return $code;
-		}
-		
-		protected function defineInstructions() {
-			$this->instructions = array(
+			$simpleInstructions = array(
 				OPCODE_EXIT     => 'exit',
 				OPCODE_CHICKEN  => 'chicken',
 				OPCODE_ADD      => 'add',
 				OPCODE_SUBTRACT => 'subtract',
 				OPCODE_MULTIPLY => 'multiply',
 				OPCODE_COMPARE  => 'compare',
-				OPCODE_LOAD     => 'load',
 				OPCODE_STORE    => 'store',
 				OPCODE_JUMP     => 'jump',
-				OPCODE_CHAR     => 'char',
-				'push'          => 'push'
+				OPCODE_CHAR     => 'char'
 			);
+			$code = '';
+			$opcodesCount = count($this->opcodes);
+			for($i = 0; $i < $opcodesCount; ++$i) {
+				switch($this->opcodes[$i]) {
+					case OPCODE_EXIT:
+					case OPCODE_CHICKEN:
+					case OPCODE_ADD:
+					case OPCODE_SUBTRACT:
+					case OPCODE_MULTIPLY:
+					case OPCODE_COMPARE:
+					case OPCODE_STORE:
+					case OPCODE_JUMP:
+					case OPCODE_CHAR:
+						$code .= $simpleInstructions[$this->opcodes[$i]] . "\n";
+						break;
+					case OPCODE_LOAD:
+						++$i;
+						if($i < $opcodesCount)
+							$source = $this->opcodes[$i];
+						else
+							$source = 0;
+						$code .= 'load ' . $source . "\n";
+						break;
+					default:
+						$code .= 'push ' . ($this->opcodes[$i] - 10) . "\n";
+						break;
+				}
+			}
+			return $code;
 		}
 	}

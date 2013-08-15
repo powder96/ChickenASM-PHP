@@ -2,5 +2,4 @@
 # input: "Chicken Power!"
 
 push 1
-load
-exit
+load 0

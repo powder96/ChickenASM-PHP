@@ -19,20 +19,57 @@
 	
 	namespace ChickenASMLanguage;
 	
-	final class EggsemblyCompiler extends ChickenASMCompiler {
-		protected function defineInstructions() {
-			$this->instructions = array(
-				OPCODE_EXIT     => 'axe',
-				OPCODE_CHICKEN  => 'chicken',
-				OPCODE_ADD      => 'add',
-				OPCODE_SUBTRACT => 'fox',
-				OPCODE_MULTIPLY => 'rooster',
-				OPCODE_COMPARE  => 'compare',
-				OPCODE_LOAD     => 'pick',
-				OPCODE_STORE    => 'peck',
-				OPCODE_JUMP     => 'fr',
-				OPCODE_CHAR     => 'bbq',
-				'push'          => 'push'
-			);
+	final class EggsemblyCompiler implements Compiler {
+		private $code;
+		
+		public function __construct($code) {
+			$this->code = $code;
+		}
+		
+		public function compile() {
+			$opcodes = array();
+			$lines = explode("\n", $this->code);
+			$currentLine = 0;
+			foreach($lines as $line) {
+				++$currentLine;
+				$instruction = trim($line);
+				switch($instruction) {
+					case 'axe':
+						$opcodes[] = OPCODE_EXIT;
+						break;
+					case 'chicken':
+						$opcodes[] = OPCODE_CHICKEN;
+						break;
+					case 'add':
+						$opcodes[] = OPCODE_ADD;
+						break;
+					case 'fox':
+						$opcodes[] = OPCODE_SUBTRACT;
+						break;
+					case 'rooster':
+						$opcodes[] = OPCODE_MULTIPLY;
+						break;
+					case 'compare':
+						$opcodes[] = OPCODE_COMPARE;
+						break;
+					case 'pick':
+						$opcodes[] = OPCODE_LOAD;
+						break;
+					case 'peck':
+						$opcodes[] = OPCODE_STORE;
+						break;
+					case 'fr':
+						$opcodes[] = OPCODE_JUMP;
+						break;
+					case 'bbq':
+						$opcodes[] = OPCODE_CHAR;
+						break;
+					default:
+						if(strpos($instruction, 'push') === 0)
+							$opcodes[] = (int)substr($instruction, strlen('push')) + 10;
+						break;
+				}
+			}
+			return $opcodes;
 		}
 	}

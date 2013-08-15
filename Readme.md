@@ -34,8 +34,8 @@ Removes the two topmost values from the stack and replaces them with their diffe
 Removes the two topmost values from the stack and replaces them with their product.
 ### compare
 Removes the two topmost values from the stack, checks if they are equal, and pushes either `true` or `false` instead.
-### load
-The topmost value is interpreted as an address. This is a double wide instruction that uses the opcode of the next instruction to determine what to load from: 0 (`exit`) for loading from the stack, 1 (`chicken`) for loading from input.
+### load N
+The topmost value is interpreted as an address. `N` determines what to load from: 0 for loading from the stack, 1 for loading from input.
 ### store
 The topmost values are interpreted as an address. The second topmost value get stored at that address on the stack.
 ### jump

@@ -2,8 +2,7 @@
 # input: "iissiso"
 
 push 0
-load
-add
+load 2
 push 0
 push 1
 compare
@@ -19,8 +18,7 @@ char
 push 5
 store
 push 5
-load
-exit
+load 0
 push 6
 store
 push 0
@@ -35,8 +33,7 @@ push 0
 push 1
 subtract
 push 2
-load
-exit
+load 0
 compare
 push 0
 push 14
@@ -48,8 +45,7 @@ multiply
 push 4
 multiply
 push 2
-load
-exit
+load 0
 compare
 push 0
 push 27
@@ -57,24 +53,19 @@ subtract
 jump
 push 1
 push 3
-load
-exit
+load 0
 add
 push 3
 store
 push 2
-load
-exit
+load 0
 push 1
 subtract
 push 3
-load
-exit
-load
-chicken
+load 0
+load 1
 push 2
-load
-multiply
+load 4
 compare
 push 0
 push 51
@@ -83,13 +74,10 @@ jump
 push 2
 add
 push 3
-load
-exit
-load
-chicken
+load 0
+load 1
 push 5
-load
-multiply
+load 4
 compare
 push 0
 push 66
@@ -98,40 +86,31 @@ jump
 push 1
 subtract
 push 2
-load
-exit
+load 0
 multiply
 push 12
-load
-multiply
+load 4
 push 3
-load
-exit
-load
-chicken
+load 0
+load 1
 compare
 push 0
 push 85
 subtract
 jump
 push 5
-load
-exit
+load 0
 push 3
-load
-exit
-load
-chicken
+load 0
+load 1
 push 1
 jump
 exit
 push 2
-load
-exit
+load 0
 add
 push 6
-load
-exit
+load 0
 add
 push 5
 store
